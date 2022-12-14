@@ -1,0 +1,15 @@
+Neos:
+  Flow:
+
+    persistence:
+      backendOptions:
+        driver: 'pdo_mysql'
+        charset: 'utf8mb4'
+        host: 'database'
+        dbname: 'flow'
+        user: 'flow'
+        password: '53cr37p455wd'
+
+    mvc:
+      routes:
+        'Neos.Flow': TRUE

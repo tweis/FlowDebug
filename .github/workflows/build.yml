@@ -1,0 +1,98 @@
+name: Build
+on:
+  # Trigger the workflow on pushes to the main branch
+  push:
+    branches: [ main ]
+  # Trigger the workflow on any pull request
+  pull_request:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    outputs:
+      name: ${{ steps.properties.outputs.name }}
+      version: ${{ steps.properties.outputs.version }}
+      changelog: ${{ steps.properties.outputs.changelog }}
+
+    steps:
+      - name: Fetch Sources
+        uses: actions/checkout@v3
+
+      - name: Gradle Wrapper Validation
+        uses: gradle/wrapper-validation-action@v1.0.5
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: zulu
+          java-version: 17
+
+      - name: Setup Gradle Dependencies Cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('**/*.gradle', '**/*.gradle.kts', 'gradle.properties') }}
+
+      - name: Setup Gradle Wrapper Cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
+
+      - name: Export Properties
+        id: properties
+        shell: bash
+        run: |
+          PROPERTIES="$(./gradlew properties --console=plain -q)"
+          VERSION="$(echo "$PROPERTIES" | grep "^version:" | cut -f2- -d ' ')"
+          NAME="$(echo "$PROPERTIES" | grep "^pluginName:" | cut -f2- -d ' ')"
+
+          echo "::set-output name=version::$VERSION"
+          echo "::set-output name=name::$NAME"
+
+      - name: Run Tests
+        run: ./gradlew check
+
+      - name: Patch Changelog & Plugin XML
+        run: ./gradlew patchChangelog patchPluginXml
+
+      - name: Export Changelog
+        id: changelog
+        shell: bash
+        run: |
+          CHANGELOG="$(./gradlew getChangelog --no-header --console=plain -q)"
+          CHANGELOG="${CHANGELOG//'%'/'%25'}"
+          CHANGELOG="${CHANGELOG//$'\n'/'%0A'}"
+          CHANGELOG="${CHANGELOG//$'\r'/'%0D'}"
+          
+          echo "::set-output name=changelog::$CHANGELOG"
+
+      - name: Verify Plugin
+        run: ./gradlew verifyPlugin
+
+      - name: Build Plugin
+        run: ./gradlew buildPlugin
+
+      - name: Remove Old Release Drafts
+        if: github.event_name != 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api repos/{owner}/{repo}/releases \
+            --jq '.[] | select(.draft == true) | .id' \
+            | xargs -I '{}' gh api -X DELETE repos/{owner}/{repo}/releases/{}
+
+      - name: Create Release Draft
+        if: github.event_name != 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create v${{ steps.properties.outputs.version }} \
+            --draft \
+            --title "v${{ steps.properties.outputs.version }}" \
+            --notes "$(cat << 'EOM'
+          ${{ steps.changelog.outputs.changelog }}
+          EOM
+          )" ./build/distributions/*

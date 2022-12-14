@@ -1,0 +1,46 @@
+name: Release
+on:
+  release:
+    types: [ prereleased, released ]
+
+jobs:
+  release:
+    name: Publish Plugin
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Fetch Sources
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: zulu
+          java-version: 17
+
+      - name: Patch Changelog
+        run: ./gradlew patchChangelog
+
+      - name: Update Plugin Repository XML
+        run: ./gradlew buildPluginRepositoryXml
+
+      - name: Create Pull Request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ github.event.release.tag_name }}"
+         
+          git config user.email "action@github.com"
+          git config user.name "GitHub Action"
+
+          git commit -am "Release $VERSION"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          branch: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}

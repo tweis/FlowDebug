@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  flow:
+    build: .
+    environment:
+      - FLOW_CONTEXT=${FLOW_CONTEXT:-Development/Docker}
+      - XDEBUG_MODE=${XDEBUG_MODE:-develop,debug}
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - 8080:80
+    extra_hosts:
+      - host.docker.internal:host-gateway
+  database:
+    image: mariadb:10.9
+    environment:
+      - MYSQL_ROOT_PASSWORD=r007p455wd
+      - MYSQL_DATABASE=flow
+      - MYSQL_USER=flow
+      - MYSQL_PASSWORD=53cr37p455wd
+    volumes:
+      - database:/var/lib/mysql
+    ports:
+      - 3306:3306
+volumes:
+  database:

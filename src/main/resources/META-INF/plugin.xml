@@ -1,0 +1,21 @@
+<idea-plugin>
+    <id>de.tweis.flowdebug</id>
+    <name>FlowDebug</name>
+    <vendor>Tim Weisenberger</vendor>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.jetbrains.php</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <projectService serviceImplementation="de.tweis.flowdebug.StateService"/>
+        <projectConfigurable parentId="reference.webide.settings.project.settings.php.debug"
+                             instance="de.tweis.flowdebug.Configurable"
+                             id="de.tweis.flowdebug.Configurable"
+                             displayName="FlowDebug"
+                             order="last"
+                             nonDefaultProject="true"/>
+    </extensions>
+    <extensions defaultExtensionNs="com.intellij.php">
+        <debug.templateLanguage implementation="de.tweis.flowdebug.PathMapper"/>
+    </extensions>
+</idea-plugin>
