@@ -1,5 +1,6 @@
 package de.tweis.flowdebug;
 
+import com.intellij.openapi.components.PathMacroManager;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
@@ -12,7 +13,15 @@ import org.jetbrains.annotations.Nullable;
 
 @State(name = "FlowDebugConfiguration", storages = {@Storage("php.xml")})
 public class StateService implements PersistentStateComponent<StateService.State> {
-    private State state = new State();
+    private State state;
+
+    public StateService(Project project) {
+        this.state = new State(
+                "Development",
+                PathMacroManager.getInstance(project)
+                        .expandPath("$PROJECT_DIR$/Data/Temporary")
+        );
+    }
 
     public static StateService getInstance(@NotNull Project project) {
         return project.getService(StateService.class);
