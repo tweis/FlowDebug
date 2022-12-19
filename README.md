@@ -1,6 +1,8 @@
 # FlowDebug
 
 ![Build](https://github.com/tweis/FlowDebug/workflows/Build/badge.svg)
+[![Version](https://img.shields.io/jetbrains/plugin/v/20649-flowdebug.svg)](https://plugins.jetbrains.com/plugin/20649-flowdebug)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/20649-flowdebug.svg)](https://plugins.jetbrains.com/plugin/20649-flowdebug)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 <!-- Plugin description -->
@@ -9,12 +11,15 @@ This PhpStorm plugin provides the mapping between original and proxy classes in 
 
 ## Installation
 
-The plugin can be installed via a custom plugin repository. In order to install the plugin, go ahead and follow [these instructions](https://www.jetbrains.com/help/phpstorm/managing-plugins.html#repos).
+- Using IDE built-in plugin system:
 
-Repository URL:
-```
-https://raw.githubusercontent.com/tweis/FlowDebug/main/updatePlugins.xml
-```
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "FlowDebug"</kbd> >
+  <kbd>Install Plugin</kbd>
+
+- Manually:
+
+  Download the [latest release](https://github.com/tweis/FlowDebug/releases/latest) and install it manually using
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
 ## Usage
 

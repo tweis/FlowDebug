@@ -1,6 +1,0 @@
-<plugins>
-    <plugin id="de.tweis.flowdebug" url="https://github.com/tweis/FlowDebug/releases/download/v${version}/FlowDebug-${version}.zip" version="${version}">
-        <idea-version since-build="${sinceBuild}"/>
-        <name>FlowDebug</name>
-    </plugin>
-</plugins>
