@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+### Added
+- Default values for plugin settings
+- Plugin signing
+
 ## [1.0.0] - 2022-12-12
 
 ### Added
