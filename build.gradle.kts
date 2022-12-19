@@ -93,13 +93,4 @@ tasks {
         // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
         channels.set(listOf(properties("pluginVersion").split('-').getOrElse(1) { "default" }.split('.').first()))
     }
-
-    register("buildPluginRepositoryXml", Copy::class) {
-        from(".github/templates/") {
-            include("updatePlugins.xml")
-            expand("version" to properties("pluginVersion"), "sinceBuild" to properties("pluginSinceBuild"))
-        }
-        into("./")
-        includeEmptyDirs = false
-    }
 }
