@@ -4,6 +4,9 @@
 
 ## [Unreleased]
 
+### Added
+- Support for 2023.1 EAP versions
+
 ## [1.1.0] - 2022-12-19
 
 ### Added
