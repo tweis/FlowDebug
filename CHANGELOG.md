@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [1.3.0] - 2023-05-17
+
 ### Added
 - Remove until version constraint to be compatible with future EAP versions
 
@@ -23,7 +25,8 @@
 ### Added
 - Initial Release
 
-[Unreleased]: https://github.com/tweis/FlowDebug/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/tweis/FlowDebug/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/tweis/FlowDebug/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/tweis/FlowDebug/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/tweis/FlowDebug/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/tweis/FlowDebug/commits/v1.0.0
