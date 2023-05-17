@@ -2,6 +2,7 @@
     <id>de.tweis.flowdebug</id>
     <name>FlowDebug</name>
     <vendor>Tim Weisenberger</vendor>
+    <idea-version since-build="222"/>
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.jetbrains.php</depends>
