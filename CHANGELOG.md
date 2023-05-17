@@ -3,6 +3,7 @@
 # FlowDebug Changelog
 
 ## [Unreleased]
+- Remove until version constraint to be compatible with future EAP versions
 
 ## [1.2.0] - 2023-01-20
 
